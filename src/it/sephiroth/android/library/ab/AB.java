@@ -13,7 +13,7 @@ public class AB {
 
 	public static final boolean LOG_ENABLED = true;
 	
-	public static final String LOG_TAG = "ab";
+	public static final String LOG_TAG = "ab-test";
 	
 	/** The global static instance */
 	private static AB instance;
