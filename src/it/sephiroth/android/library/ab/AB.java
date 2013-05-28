@@ -11,7 +11,7 @@ public class AB {
 		GroupA, GroupB
 	};
 
-	public static final boolean LOG_ENABLED = true;
+	public static final boolean LOG_ENABLED = false;
 	
 	public static final String LOG_TAG = "ab-test";
 	
