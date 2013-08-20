@@ -47,7 +47,7 @@
          This file is an integral part of the build system for your
          application and should be checked into Version Control Systems. -->
     <loadproperties srcFile="project.properties" />
-    <loadproperties srcFile="../project.properties" />
+    <loadproperties srcFile="../project.properties"></loadproperties>
 
     <!-- quick check on sdk.dir -->
     <fail
@@ -90,14 +90,13 @@
     <!-- version-tag: 1 -->
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
-    <target name="-post-compile">
-        <antcall target="rename-jar" />
+	<target name="-post-compile">
+		<antcall target="rename-jar" />
     </target>
 
     <target name="rename-jar">
-        <fail unless="aviary.abtest.jar" message="'aviary.abtest.jar' not defined" />
+		<fail unless="aviary.abtest.jar" message="'aviary.abtest.jar' not defined" />
         <copy tofile="./bin/${aviary.abtest.jar}" file="./bin/classes.jar" verbose="true" />
-        <delete file="./bin/classes.jar" verbose="true" />
-    </target>
-
+    </target>   
+    
 </project>
