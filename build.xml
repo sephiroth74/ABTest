@@ -48,6 +48,7 @@
          application and should be checked into Version Control Systems. -->
     <loadproperties srcFile="project.properties" />
     <loadproperties srcFile="../project.properties"></loadproperties>
+    <import file="../tools/ant/aviary_sdk_rules.xml" optional="true" />
 
     <!-- quick check on sdk.dir -->
     <fail
@@ -91,12 +92,9 @@
     <import file="${sdk.dir}/tools/ant/build.xml" />
 
 	<target name="-post-compile">
-		<antcall target="rename-jar" />
+		<antcall target="-rename-jar">
+		    <param name="dst.file" value="${out.absolute.dir}/${aviary.abtest.jar}" />
+		</antcall>
     </target>
-
-    <target name="rename-jar">
-		<fail unless="aviary.abtest.jar" message="'aviary.abtest.jar' not defined" />
-        <copy tofile="./bin/${aviary.abtest.jar}" file="./bin/classes.jar" verbose="true" />
-    </target>   
     
 </project>

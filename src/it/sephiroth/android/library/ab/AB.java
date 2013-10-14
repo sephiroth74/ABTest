@@ -36,6 +36,10 @@ public class AB {
 			Log.d( LOG_TAG, "hashCode: " + hashCode );
 		}
 	}
+	
+	public String getUUID() {
+		return manager.getUUID();
+	}
 
 	/**
 	 * Returns the {@link Group} assigned to the current instance
