@@ -1,0 +1,81 @@
+
+version '1.0.0'
+group 'it.sephiroth.android'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.6+'
+    }
+}
+
+apply plugin: 'android-library'
+apply plugin: 'maven-publish'
+apply plugin: 'maven'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "18.0.1"
+
+    defaultConfig {
+        versionCode 1
+        versionName version
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            res.srcDirs = ['res']
+        }
+    }
+}
+
+project.ext {
+    outJar = rootProject.name + '-' + android.defaultConfig.versionName + '.jar'
+}
+
+task clearJar(type: Delete) {
+    delete 'build/libs/' + project.ext.outJar
+}
+
+task makeJar(type: Copy) {
+    from('build/bundles/release/')
+    into('build/libs/')
+    include('classes.jar')
+    rename ('classes.jar', project.ext.outJar)
+}
+
+makeJar.dependsOn(clearJar, build)
+
+
+task createPom << {
+    pom {
+        project {
+            groupId 'it.sephiroth.android'
+            artifactId 'abtest'
+            version '1.0.0'
+
+            inceptionYear '2012'
+            licenses {
+                license {
+                    name 'Creative Common, Attribution-ShareAlike '
+                    url 'http://creativecommons.org/licenses/by-sa/3.0/legalcode'
+                    distribution 'repo'
+                }
+            }
+        }
+    }.writeTo("pom.xml")
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file:///Users/alessandro/.m2/repository/")
+        }
+    }
+}
