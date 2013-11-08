@@ -2,15 +2,6 @@
 version '1.0.0'
 group 'it.sephiroth.android'
 
-buildscript {
-    repositories {
-        mavenCentral()
-        mavenLocal()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.6+'
-    }
-}
 
 apply plugin: 'android-library'
 apply plugin: 'maven-publish'
@@ -39,10 +30,12 @@ project.ext {
 }
 
 task clearJar(type: Delete) {
+    println "[clearJar]"
     delete 'build/libs/' + project.ext.outJar
 }
 
 task makeJar(type: Copy) {
+    println "[makeJar]"
     from('build/bundles/release/')
     into('build/libs/')
     include('classes.jar')
@@ -51,6 +44,10 @@ task makeJar(type: Copy) {
 
 makeJar.dependsOn(clearJar, build)
 
+
+build << {
+    makeJar.execute()
+}
 
 task createPom << {
     pom {
@@ -70,7 +67,6 @@ task createPom << {
         }
     }.writeTo("pom.xml")
 }
-
 
 uploadArchives {
     repositories {
