@@ -1,1 +1,4 @@
-include ':library', ':demo'
+rootProject.name = 'abtest'
+
+include ':library'
+include ':demo'

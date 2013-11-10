@@ -9,6 +9,18 @@ buildscript {
     }
 }
 
+apply plugin: 'maven'
+
+allprojects {
+    group = 'it.sephiroth.android'
+    version = '1.0.0'
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '1.8'
 }

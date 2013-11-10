@@ -1,7 +1,4 @@
 
-version '1.0.0'
-group 'it.sephiroth.android'
-
 
 apply plugin: 'android-library'
 apply plugin: 'maven-publish'
@@ -26,7 +23,7 @@ android {
 }
 
 project.ext {
-    outJar = rootProject.name + '-' + android.defaultConfig.versionName + '.jar'
+    outJar = rootProject.name + '-' + version + '.jar'
 }
 
 task clearJar(type: Delete) {
@@ -35,7 +32,7 @@ task clearJar(type: Delete) {
 }
 
 task makeJar(type: Copy) {
-    println "[makeJar]"
+    println '[makeJar] ' + project.ext.outJar
     from('build/bundles/release/')
     into('build/libs/')
     include('classes.jar')
@@ -53,8 +50,8 @@ task createPom << {
     pom {
         project {
             groupId 'it.sephiroth.android'
-            artifactId 'abtest'
-            version '1.0.0'
+            artifactId rootProject.name
+            version version
 
             inceptionYear '2012'
             licenses {
@@ -68,10 +65,14 @@ task createPom << {
     }.writeTo("pom.xml")
 }
 
+
+
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "file:///Users/alessandro/.m2/repository/")
+            repository(url: "file://$System.env.HOME/.m2/repository/")
+            pom.version = rootProject.version
+            pom.artifactId = rootProject.name
         }
     }
 }
