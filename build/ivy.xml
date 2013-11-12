@@ -4,7 +4,7 @@
 		module="abtest"
 		revision="1.0.0"
 		status="integration"
-		publication="20131109194210"
+		publication="20131111182357"
 	/>
 	<configurations>
 		<conf name="archives" visibility="public" description="Configuration for archive artifacts."/>

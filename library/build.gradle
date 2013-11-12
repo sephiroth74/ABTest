@@ -6,7 +6,7 @@ apply plugin: 'maven'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "18.0.1"
+    buildToolsVersion "18.1.1"
 
     defaultConfig {
         versionCode 1
@@ -17,8 +17,12 @@ android {
         main {
             manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
-        }
+            assets.srcDirs = ['assets']
+        }    
     }
 }
 
@@ -27,45 +31,49 @@ project.ext {
 }
 
 task clearJar(type: Delete) {
-    println "[clearJar]"
     delete 'build/libs/' + project.ext.outJar
 }
 
 task makeJar(type: Copy) {
-    println '[makeJar] ' + project.ext.outJar
     from('build/bundles/release/')
     into('build/libs/')
     include('classes.jar')
     rename ('classes.jar', project.ext.outJar)
 }
 
-makeJar.dependsOn(clearJar, build)
-
+makeJar.dependsOn(clearJar)
+build.dependsOn(makeJar)
+uploadArchives.dependsOn(build)
 
 build << {
-    makeJar.execute()
+    createPom.execute()
 }
 
 task createPom << {
     pom {
         project {
-            groupId 'it.sephiroth.android'
+            groupId groupId
             artifactId rootProject.name
             version version
 
             inceptionYear '2012'
             licenses {
                 license {
-                    name 'Creative Common, Attribution-ShareAlike '
+                    name 'Creative Common, Attribution-ShareAlike'
                     url 'http://creativecommons.org/licenses/by-sa/3.0/legalcode'
                     distribution 'repo'
+                }
+            }
+            developers {
+                developer {
+                    id 'sephiroth74'
+                    name 'Alessandro Crugnola'
+                    email 'alessandro.crugnola@gmail.com'
                 }
             }
         }
     }.writeTo("pom.xml")
 }
-
-
 
 uploadArchives {
     repositories {

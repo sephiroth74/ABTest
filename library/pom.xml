@@ -8,9 +8,16 @@
   <inceptionYear>2012</inceptionYear>
   <licenses>
     <license>
-      <name>Creative Common, Attribution-ShareAlike </name>
+      <name>Creative Common, Attribution-ShareAlike</name>
       <url>http://creativecommons.org/licenses/by-sa/3.0/legalcode</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <developers>
+    <developer>
+      <id>sephiroth74</id>
+      <name>Alessandro Crugnola</name>
+      <email>alessandro.crugnola@gmail.com</email>
+    </developer>
+  </developers>
 </project>
