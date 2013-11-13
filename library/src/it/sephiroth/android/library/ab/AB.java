@@ -11,9 +11,11 @@ public class AB {
 		GroupA, GroupB
 	};
 
+	public static final String VERSION = "2.0.1";
+
 	public static final boolean LOG_ENABLED = false;
 	
-	public static final String LOG_TAG = "ab-test";
+	public static final String LOG_TAG = "AB";
 	
 	/** The global static instance */
 	private static AB instance;
