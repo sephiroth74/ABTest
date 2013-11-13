@@ -1,4 +1,4 @@
-rootProject.name = 'abtest'
+rootProject.name = 'ab'
 
 include ':library'
 include ':demo'

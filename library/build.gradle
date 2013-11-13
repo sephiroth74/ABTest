@@ -4,6 +4,7 @@ apply plugin: 'android-library'
 apply plugin: 'maven-publish'
 apply plugin: 'maven'
 
+
 android {
     compileSdkVersion 19
     buildToolsVersion "18.1.1"
@@ -11,6 +12,8 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
+        minSdkVersion 9
+        targetSdkVersion 19
     }
 
     sourceSets {
@@ -38,25 +41,19 @@ task makeJar(type: Copy) {
     from('build/bundles/release/')
     into('build/libs/')
     include('classes.jar')
-    rename ('classes.jar', project.ext.outJar)
+    rename ('classes.jar', project.ext.outJar)   
 }
 
-makeJar.dependsOn(clearJar)
-build.dependsOn(makeJar)
-uploadArchives.dependsOn(build)
-
-build << {
-    createPom.execute()
-}
-
-task createPom << {
-    pom {
+def generatePom() {
+    def pom = pom{
         project {
             groupId groupId
-            artifactId rootProject.name
+            artifactId 'ab'
             version version
+            description 'Simple library for ab testing in android'
+            inceptionYear '2013'
+            url 'https://github.com/sephiroth74/ABTest'
 
-            inceptionYear '2012'
             licenses {
                 license {
                     name 'Creative Common, Attribution-ShareAlike'
@@ -64,23 +61,63 @@ task createPom << {
                     distribution 'repo'
                 }
             }
+
+            scm {
+                url                 "scm:git:git@github.com:sephiroth74/ABTest.git"
+                connection          "scm:git:git@github.com:sephiroth74/ABTest.git"
+                developerConnection "scm:git:git@github.com:sephiroth74/ABTest.git"
+            }
+
+
             developers {
                 developer {
                     id 'sephiroth74'
                     name 'Alessandro Crugnola'
                     email 'alessandro.crugnola@gmail.com'
+                    url 'http://blog.sephiroth.it'
+                    roles {
+                        role 'author'
+                        role 'developer'
+                    }
                 }
             }
         }
-    }.writeTo("pom.xml")
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "file://$System.env.HOME/.m2/repository/")
-            pom.version = rootProject.version
-            pom.artifactId = rootProject.name
-        }
     }
 }
+
+task writePom {
+    ext.pomXml = file("pom.xml")
+    inputs.file(project.buildFile)
+    outputs.file(pomXml)
+    doLast {
+        println "Writing pom.xml"
+        generatePom().writeTo(pomXml)
+    }
+}
+
+/*
+configurations {
+    outJar
+}
+
+def outJar = file("build/libs/${project.ext.outJar}")
+
+artifacts {
+    archives outJar
+}
+*/
+
+uploadArchives {
+    doFirst {
+        repositories.mavenDeployer.pom = generatePom()
+    }
+
+    repositories.mavenDeployer {
+        repository(url: "file://$System.env.HOME/.m2/repository/")
+    }
+}
+
+clean.dependsOn 'clearJar'
+build.dependsOn = ['writePom', 'makeJar']
+uploadArchives.dependsOn 'build'
+

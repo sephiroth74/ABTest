@@ -2,10 +2,12 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>it.sephiroth.android</groupId>
-  <artifactId>abtest</artifactId>
+  <groupId>it.sephiroth.android.library.ab</groupId>
+  <artifactId>ab</artifactId>
   <version>1.0.0</version>
-  <inceptionYear>2012</inceptionYear>
+  <description>Simple library for ab testing in android</description>
+  <url>https://github.com/sephiroth74/ABTest</url>
+  <inceptionYear>2013</inceptionYear>
   <licenses>
     <license>
       <name>Creative Common, Attribution-ShareAlike</name>
@@ -18,6 +20,16 @@
       <id>sephiroth74</id>
       <name>Alessandro Crugnola</name>
       <email>alessandro.crugnola@gmail.com</email>
+      <url>http://blog.sephiroth.it</url>
+      <roles>
+        <role>author</role>
+        <role>developer</role>
+      </roles>
     </developer>
   </developers>
+  <scm>
+    <connection>scm:git:git@github.com:sephiroth74/ABTest.git</connection>
+    <developerConnection>scm:git:git@github.com:sephiroth74/ABTest.git</developerConnection>
+    <url>scm:git:git@github.com:sephiroth74/ABTest.git</url>
+  </scm>
 </project>

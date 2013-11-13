@@ -22,3 +22,5 @@ local.properties
 *.iml
 .idea
 .gradle
+
+build/
