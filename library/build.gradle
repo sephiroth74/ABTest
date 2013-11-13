@@ -1,9 +1,4 @@
-
-
 apply plugin: 'android-library'
-apply plugin: 'maven-publish'
-apply plugin: 'maven'
-
 
 android {
     compileSdkVersion 19
@@ -50,6 +45,7 @@ def generatePom() {
             groupId groupId
             artifactId 'ab'
             version version
+            packaging 'aar'
             description 'Simple library for ab testing in android'
             inceptionYear '2013'
             url 'https://github.com/sephiroth74/ABTest'
@@ -90,22 +86,9 @@ task writePom {
     inputs.file(project.buildFile)
     outputs.file(pomXml)
     doLast {
-        println "Writing pom.xml"
         generatePom().writeTo(pomXml)
     }
 }
-
-/*
-configurations {
-    outJar
-}
-
-def outJar = file("build/libs/${project.ext.outJar}")
-
-artifacts {
-    archives outJar
-}
-*/
 
 uploadArchives {
     doFirst {
