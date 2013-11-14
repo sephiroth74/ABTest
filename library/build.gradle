@@ -45,7 +45,6 @@ def generatePom() {
             groupId groupId
             artifactId 'ab'
             version version
-            packaging 'aar'
             description 'Simple library for ab testing in android'
             inceptionYear '2013'
             url 'https://github.com/sephiroth74/ABTest'
