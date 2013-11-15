@@ -1,4 +1,4 @@
 rootProject.name = 'ab'
 
-include ':library'
+include ':ab'
 include ':demo'

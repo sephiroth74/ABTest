@@ -4,8 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>it.sephiroth.android.library.ab</groupId>
   <artifactId>ab</artifactId>
-  <version>1.0.1</version>
-  <packaging>aar</packaging>
+  <version>2.0.1</version>
   <description>Simple library for ab testing in android</description>
   <url>https://github.com/sephiroth74/ABTest</url>
   <inceptionYear>2013</inceptionYear>

@@ -10,8 +10,6 @@ buildscript {
 }
 
 allprojects {
-    group = 'it.sephiroth.android.library.ab'
-    version = '2.0.1'
 
     apply plugin: 'maven-publish'
     apply plugin: 'maven'
