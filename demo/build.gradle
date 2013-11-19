@@ -2,7 +2,16 @@
 apply plugin: 'android'
 apply plugin: 'maven'
 
+repositories {
+    mavenLocal()
+    //maven {
+    //    url uri(mavenDownloadServer + mavenRepo + mavenReleases)
+    //}
+}
+
 dependencies {
+    compile 'com.android.support:support-v4:19.0.+'
+    // compile 'it.sephiroth.android.library.ab:ab:latest.release'
     compile project(':ab')
 }
 

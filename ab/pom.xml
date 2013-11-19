@@ -32,4 +32,10 @@
     <developerConnection>scm:git:git@github.com:sephiroth74/ABTest.git</developerConnection>
     <url>scm:git:git@github.com:sephiroth74/ABTest.git</url>
   </scm>
+  <repositories>
+    <repository>
+      <id>s3.release</id>
+      <url>http://maven.aviary.com/repo/release</url>
+    </repository>
+  </repositories>
 </project>
