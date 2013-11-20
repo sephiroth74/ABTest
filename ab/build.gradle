@@ -1,7 +1,7 @@
 apply plugin: 'android-library'
 
 group 'it.sephiroth.android.library.ab'
-version '2.0.1'
+version '2.0.1' + gradle.ext.versionModifier
 
 android {
     compileSdkVersion 19
@@ -67,7 +67,7 @@ def generatePom() {
             }
 
             scm {
-                url                 "scm:git:git@github.com:sephiroth74/ABTest.git"
+                url                 "https://github.com/sephiroth74/ABTest"
                 connection          "scm:git:git@github.com:sephiroth74/ABTest.git"
                 developerConnection "scm:git:git@github.com:sephiroth74/ABTest.git"
             }
@@ -87,9 +87,15 @@ def generatePom() {
             }
 
             repositories {
-                repository {
-                    id 's3.release'
-                    url 'http://maven.aviary.com/repo/release'
+
+                project.repositories.each { repo ->
+
+                    if (repo.name != 'MavenRepo' && repo.name != 'MavenLocal' && !repo.url.toString().startsWith('file:/') ) {
+                        repository {
+                            id = repo.name
+                            url = repo.url
+                        }
+                    }
                 }
             }
         }
@@ -106,17 +112,29 @@ task writePom {
 }
 
 uploadArchives {
-    doFirst {
-        repositories.mavenDeployer.pom = generatePom()
+    repositories {
+        if( project.hasProperty('username') && project.hasProperty('password')) {
+
+
+            mavenDeployer {
+                pom = generatePom()
+                configuration = configurations.deployerJars
+
+                repository(url: mavenUploadServer + mavenRepo + mavenReleases){
+                    authentication(userName: username, password: password)
+                }
+
+                snapshotRepository(url: mavenUploadServer + mavenRepo + mavenSnapshot){
+                    authentication(userName: username, password: password)
+                }
+            }
+        } else {
+        }
     }
 
-    repositories {
-        mavenDeployer {
-            configuration = configurations.deployerJars
-
-            repository(url: mavenUploadServer + mavenRepo + mavenReleases){
-                authentication(userName: mavenUsername, password: mavenPassword)
-            }
+    doLast {
+        if( !project.hasProperty('username') || !project.hasProperty('password')) {
+            logger.error '\tError: Cannot upload artifacts, username and password missing'
         }
     }
 }
@@ -133,6 +151,8 @@ task updateVersion {
         def pattern = /(?ms)^\s*public static final String VERSION = "($project.version)";$/
         def matcher = ( text =~ pattern )
 
+        println "\tVersion check. ${project.version}"
+
         if( matcher.size() > 0 ) {
             return false
         }
@@ -145,8 +165,9 @@ task updateVersion {
 
         println "Version mismatch. updating version to ${project.version}"
 
+
         def text = src.text
-        def pattern = /(?ms)^(\s*)(public static final String VERSION = ")([0-9\.]+)(";)$/
+        def pattern = /(?ms)^(\s*)(public static final String VERSION = ")([0-9a-zA-Z\-\.]+)(";)$/
         def matcher = ( text =~ pattern )
 
         if( matcher.size() > 0 ) {
@@ -154,11 +175,11 @@ task updateVersion {
             src.setText(text)
             println "Updated version of AviaryCds.java to ${project.version}"
         }
-
     }
 }
 
 clean.dependsOn(clearJar)
+
 build.dependsOn(writePom, makeJar)
 uploadArchives.dependsOn(build)
-preBuild.dependsOn(updateVersion)
+preBuild.dependsOn(displayInfo, updateVersion)
