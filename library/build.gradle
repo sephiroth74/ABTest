@@ -38,6 +38,11 @@ task displayInfo() {
 
 project.ext.outJar = project.name + '-' + version + '.jar'
 
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.allSource
+}
+
 task clearJar(type: Delete) {
     delete 'build/libs/' + project.ext.outJar
 }
@@ -136,6 +141,10 @@ task updateVersion {
             println "Updated version of AviaryCds.java to ${project.version}"
         }
     }
+}
+
+artifacts {
+    archives sourcesJar
 }
 
 signing {
