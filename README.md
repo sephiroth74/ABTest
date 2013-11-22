@@ -3,7 +3,14 @@ ABTest
 
 Simple library for ab testing in android
 
-## Sample code
+
+## Usage (gradle)
+
+Add this line to your dependecy group:
+
+	compile 'it.sephiroth.android.library.ab:library:+'
+
+## Example
 
 
 This library is meant for very simple AB testing.
