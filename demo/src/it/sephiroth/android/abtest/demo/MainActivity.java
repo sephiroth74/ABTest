@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 import it.sephiroth.android.library.ab.AB;
 import it.sephiroth.android.library.ab.ABTest;
 
@@ -21,6 +22,8 @@ public class MainActivity extends Activity
         abtest = AB.getInstance(this);
 
         setTitle("Group: " + abtest.getGroup());
+
+        Toast.makeText( this, "AB.VERSION: " + AB.VERSION, Toast.LENGTH_SHORT).show();
 
         findViewById(R.id.button).setOnClickListener( new View.OnClickListener() {
             @Override

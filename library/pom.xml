@@ -3,10 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>it.sephiroth.android.library.ab</groupId>
-  <artifactId>ab</artifactId>
-  <version>2.0.1</version>
-  <description>Simple library for ab testing in android</description>
-  <url>https://github.com/sephiroth74/ABTest</url>
+  <artifactId>library</artifactId>
+  <version>2.0.2</version>
+  <name>AB</name>
+  <description>Light weight ab testing library for Android</description>
+  <url>http://blog.sephiroth.it</url>
   <inceptionYear>2013</inceptionYear>
   <licenses>
     <license>
@@ -32,14 +33,4 @@
     <developerConnection>scm:git:git@github.com:sephiroth74/ABTest.git</developerConnection>
     <url>https://github.com/sephiroth74/ABTest</url>
   </scm>
-  <repositories>
-    <repository>
-      <id>aviary-release</id>
-      <url>http://maven.aviary.com/repo/release</url>
-    </repository>
-    <repository>
-      <id>aviary-snapshot</id>
-      <url>http://maven.aviary.com/repo/snapshot</url>
-    </repository>
-  </repositories>
 </project>

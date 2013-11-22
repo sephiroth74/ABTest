@@ -1,7 +1,2 @@
-rootProject.name = 'ab'
-
-gradle.ext.versionModifier = ''
-gradle.ext.versionModifier = '-SNAPSHOT'
-
-include ':ab'
+include ':library'
 include ':demo'
