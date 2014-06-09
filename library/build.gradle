@@ -1,176 +1,29 @@
 apply plugin: 'android-library'
-apply plugin: 'signing'
 
-group 'it.sephiroth.android.library.ab'
-version '2.0.2'
+group GROUP
+version VERSION_NAME
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "18.1.1"
+    buildToolsVersion '19.1'
 
     defaultConfig {
-        versionCode 1
-        versionName version
         minSdkVersion 9
         targetSdkVersion 19
+        versionCode 1
+        versionName version
     }
-
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
-        }    
-    }
-}
-
-task displayInfo() {
-    doLast {
-        logger.lifecycle "  project name: ${project.name} (root: ${rootProject.name})"
-        logger.lifecycle "  project version: ${project.version}"
-        logger.lifecycle "  project group: ${project.group}"
-    }
-}
-
-project.ext.outJar = project.name + '-' + version + '.jar'
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.allSource
-}
-
-task clearJar(type: Delete) {
-    delete 'build/libs/' + project.ext.outJar
-}
-
-task makeJar(type: Copy) {
-    from('build/bundles/release/')
-    into('build/libs/')
-    include('classes.jar')
-    rename ('classes.jar', project.ext.outJar)   
-}
-
-def generatePom() {
-    def pom = pom{
-        project {
-            name 'AB'
-            groupId project.group
-            artifactId project.name
-            version project.version
-            description 'Light weight ab testing library for Android'
-            inceptionYear '2013'
-            url 'http://blog.sephiroth.it'
-
-            licenses {
-                license {
-                    name 'Creative Common, Attribution-ShareAlike'
-                    url 'http://creativecommons.org/licenses/by-sa/3.0/legalcode'
-                    distribution 'repo'
-                }
-            }
-
-            scm {
-                url                 "https://github.com/sephiroth74/ABTest"
-                connection          "scm:git:git@github.com:sephiroth74/ABTest.git"
-                developerConnection "scm:git:git@github.com:sephiroth74/ABTest.git"
-            }
-
-
-            developers {
-                developer {
-                    id 'sephiroth74'
-                    name 'Alessandro Crugnola'
-                    email 'alessandro.crugnola@gmail.com'
-                    url 'http://blog.sephiroth.it'
-                    roles {
-                        role 'author'
-                        role 'developer'
-                    }
-                }
-            }
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
 }
 
-task writePom {
-    ext.pomXml = file("pom.xml")
-    inputs.file(project.buildFile)
-    outputs.file(pomXml)
-    doLast {
-        generatePom().writeTo(pomXml)
-    }
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 
-task updateVersion {
-    def source = new File("src/it/sephiroth/android/library/ab/AB.java")
-
-    onlyIf { task ->        
-        def src = project.file(source)
-        def text = src.text
-
-        def pattern = /(?ms)^\s*public static final String VERSION = "($project.version)";$/
-        def matcher = ( text =~ pattern )
-
-        println "\tVersion check. ${project.version}"
-
-        if( matcher.size() > 0 ) {
-            return false
-        }
-
-        return true
-    }
-
-    doLast {
-        def src = project.file(source)
-
-        println "Version mismatch. updating version to ${project.version}"
-
-
-        def text = src.text
-        def pattern = /(?ms)^(\s*)(public static final String VERSION = ")([0-9a-zA-Z\-\.]+)(";)$/
-        def matcher = ( text =~ pattern )
-
-        if( matcher.size() > 0 ) {
-            text = matcher.replaceFirst("\$1\$2" + project.version + "\$4")
-            src.setText(text)
-            println "Updated version of AviaryCds.java to ${project.version}"
-        }
-    }
-}
-
-artifacts {
-    archives sourcesJar
-}
-
-signing {
-    sign configurations.archives
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment {
-                MavenDeployment deployment -> signing.signPom(deployment)
-            }
-            pom = generatePom()
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword )
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword )
-            }
-        }
-    }
-}
-
-clean.dependsOn(clearJar)
-build.dependsOn(writePom, makeJar)
-uploadArchives.dependsOn(build)
-preBuild.dependsOn(displayInfo, updateVersion)
+apply from: 'https://raw.githubusercontent.com/sephiroth74/gradle-mvn-push/master/gradle-mvn-push.gradle'
