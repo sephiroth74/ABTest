@@ -25,17 +25,17 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-android.libraryVariants.all { variant ->
-  def name = variant.buildType.name
-  if (name.equals(com.android.builder.core.BuilderConstants.DEBUG)) {
-    return; // Skip debug builds.
-  }
-  def task = project.tasks.create "jar${name.capitalize()}", Jar
-  task.dependsOn variant.javaCompile
-  println android.sourceSets.main.java.sourceFiles
-  task.from android.sourceSets.main.java.sourceFiles
-  artifacts.add('archives', task);
-}
+//android.libraryVariants.all { variant ->
+//  def name = variant.buildType.name
+//  if (name.equals(com.android.builder.core.BuilderConstants.DEBUG)) {
+//    return; // Skip debug builds.
+//  }
+//  def task = project.tasks.create "jar${name.capitalize()}", Jar
+//  task.dependsOn variant.javaCompile
+//  println android.sourceSets.main.java.sourceFiles
+//  task.from android.sourceSets.main.java.sourceFiles
+//  artifacts.add('archives', task);
+//}
 
 
 apply from: 'https://raw.githubusercontent.com/sephiroth74/gradle-mvn-push/master/gradle-mvn-push.gradle'
