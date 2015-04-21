@@ -53,6 +53,7 @@ public class AB {
 
 	public int getGroup( int... percentages ) {
 		if ( group < 0 ) {
+			if ( !checkSum(percentages) ) throw new IllegalArgumentException("Arguments must sum to 100");
 			group = generateGroup( percentages );
 		}
 		return group;
@@ -70,12 +71,7 @@ public class AB {
 
 	public void doNTest( CharSequence name, NTest action, int... percentages ) {
 
-		int sum = 0;
-		for ( int i : percentages ) {
-			sum += i;
-		}
-
-		if ( sum != 100 ) throw new IllegalArgumentException("Arguments must sum to 100, current sum: " + sum);
+		if ( !checkSum(percentages) ) throw new IllegalArgumentException("Arguments must sum to 100");
 
 		action.run( getGroup( percentages ) );
 
@@ -132,6 +128,15 @@ public class AB {
 			}
 		}
 		return instance;
+	}
+
+	private boolean checkSum( int... percentages ) {
+		int sum = 0;
+		for ( int i : percentages ) {
+			sum += i;
+		}
+
+		return sum == 100;
 	}
 
 }
