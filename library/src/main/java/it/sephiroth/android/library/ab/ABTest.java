@@ -1,7 +1,5 @@
 package it.sephiroth.android.library.ab;
 
-import it.sephiroth.android.library.ab.AB.Group;
-
 public abstract class ABTest {
 	
 	private CharSequence name;
@@ -13,11 +11,11 @@ public abstract class ABTest {
 		return name;
 	}
 	
-	protected final void run( CharSequence name, Group group ) {
+	protected final void run( CharSequence name, int group ) {
 		
 		this.name = name;
 		
-		if( group == Group.GroupA ) {
+		if( group == 0 ) {
 			A();
 		} else {
 			B();
