@@ -50,7 +50,6 @@ public class AB {
 		return group;
 	}
 
-
 	public int getGroup( int... percentages ) {
 		if ( group < 0 ) {
 			if ( !checkSum(percentages) ) throw new IllegalArgumentException("Arguments must sum to 100");
@@ -58,23 +57,10 @@ public class AB {
 		}
 		return group;
 	}
-	
-	/**
-	 * Executes a new AB test.<br />
-	 * 
-	 * @param name the label associated to this test
-	 * @param action the action to be executed
-	 */
-	public void doABTest( CharSequence name, ABTest action ) {
-		action.run( name, getGroup() );
-	}
 
 	public void doNTest( CharSequence name, NTest action, int... percentages ) {
-
 		if ( !checkSum(percentages) ) throw new IllegalArgumentException("Arguments must sum to 100");
-
 		action.run( getGroup( percentages ) );
-
 	}
 
 	/**
@@ -92,7 +78,9 @@ public class AB {
 
 	private int generateGroup( int... percentages ) {
 		// look at the hashcode as a number between 0 - 99
-		int value = hashCode % 100;
+		int value = Math.abs(hashCode) % 100;
+
+		Log.i("AB", "group name hash: " + value);
 
 		int compareValue = 0;
 
